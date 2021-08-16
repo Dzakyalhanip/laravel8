@@ -15,14 +15,20 @@ use App\Http\Controllers\BlogController;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('welcome');
 });
-Route::get('/index',[BlogController::class,'index']);
-Route::get('/tambah',[BlogController::class,'tambah'])->name('tambah');
+Route::get('/index',[BlogController::class,'index'])->name('index');
+Route::get('/index/tambah',[BlogController::class,'tambah'])->name('tambah');
 Route::post('/tambah',[BlogController::class,'simpan'])->name('simpan');
-Route::get('/edit/{id}',[BlogController::class,'edit'])->name('edit');
+Route::get('/index/edit/{id}',[BlogController::class,'edit'])->name('edit');
 Route::put('/update/{id}',[BlogController::class,'update'])->name('update');
 
 
 Route::delete('/hapus{id}',[BlogController::class,'delete']);
 // Route::post('/simpan', 'BlogController@simpan')->name('simpan');
+Auth::routes();
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('penulis', function () { return view('penulis'); })->middleware(['checkRole:admin,penulis']);
+Route::get('pembaca', function () { return view('pembaca'); })->middleware('checkRole:pembaca');
